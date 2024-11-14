@@ -7,56 +7,31 @@ from gi.repository import Gtk
 # for the PyGTK documentation
 
 
-class main_window(Gtk.Window):
+class main_window():
     def __init__(self):
         """Initializes the main window. Usually only called one per execution."""
-        super().__init__(title = "RGB 2 ASCII")
+        template = "./ui/ui_template.glade"
 
-        # The bigger box, parent of the other widgets
-        self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        self.add(self.main_box)
+        # Start the builder using the glade .xml file
+        self.builder = Gtk.Builder()
+        # Adds the main window from the template with all its children
+        self.builder.add_from_file(template)
 
-        # Another box, so as to arrange thing either vertically (append to main)
-        # or horizontally (append to this one)
-        self.secondary_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        # Grabs all the objects from the ui file.
+        # Only needed when addressing their events
+        self.window = self.builder.get_object("main_window")
 
-        # TODO: Make this useable!
-        self.load_button = Gtk.FileChooserButton()
-        self.load_button.connect('file-set', self.image_loaded)
-
-        #The left side panel with all of its elements
-        self.left_panel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-
-        # The central image to load
-        self.main_image = Gtk.Image()
-
-        # The right side panel with all of its contents
-        self.right_panel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-
-
-        # Finally, adding the elements to the window
-        self.main_box.pack_start(self.load_button, True, True, 0)
-        self.main_box.pack_end(self.secondary_box, True, True, 0)
-        self.secondary_box.pack_start(self.left_panel, True, True, 0)
-        self.secondary_box.pack_start(self.main_image, True, True, 0)
-        self.secondary_box.pack_end(self.right_panel, True, True, 0)
-
+        # Main window events
+        self.window.connect('destroy', Gtk.main_quit)
 
     def image_loaded(self, widget):
         """Loads the image after the user has selected one"""
-        # TODO: Have this make something, probably customizing the chooser instance
-        print("Module: UI, Image loaded successfully")
-        self.main_image.set_from_file("./apurao.jpg")
+        file_chooser = Gtk.FileChooserDialog()
+        print(file_chooser.get_current_folder())
 
-def ui_function(function: str) -> str:
-    """Returns the name of a function to use on the main so we can call functions to other modules"""
-    return function
 
 #The module loaded and, thus, you see the window
 print("Module: UI successfully started.\n")
 
-# TODO: Should move this to the main
 win = main_window() # Creates an instance of the window class
-win.show_all() # Shows the window's instance
-win.connect('destroy', Gtk.main_quit) # If the window closes, quit
 Gtk.main() # The main Gtk thread
