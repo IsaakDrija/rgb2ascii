@@ -1,11 +1,14 @@
 #Just import your libraries or whatever the heck you desire here
 import convert
+import ui
+
+from gi.repository import Gtk
 
 
 if __name__ == "__main__":
     print("Hola mundo!") #Just testing haha
-    import ui
-    # The UI comes last on load, hence why it's here.
-    # But we shouldn't really be running the UI from its own module,
-    # rather, we should import the classes and have the main application here
-    # so the communication with the other modules becomes easier.
+
+    win = ui.main_window()
+    print(ui.main_window.setting_invert(win, win.button_check_invert))
+    # This will be the backbone of the application. If it closes, the program terminates
+    Gtk.main()

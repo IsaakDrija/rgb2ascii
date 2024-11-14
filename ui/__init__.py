@@ -18,11 +18,19 @@ class main_window():
         self.builder.add_from_file(template)
 
         # Grabs all the objects from the ui file.
-        # Only needed when addressing their events
+        # Only needed when addressing their events or from outside the class itself
         self.window = self.builder.get_object("main_window")
+        self.button_check_invert = self.builder.get_object("button_check_invert")
 
-        # Main window events
+        # Main window and its elements' events
         self.window.connect('destroy', Gtk.main_quit)
+        self.button_check_invert.connect('toggled', self.setting_invert)
+
+
+    def setting_invert(self, widget):
+        bInvert = widget.get_active()
+        return bInvert
+
 
     def image_loaded(self, widget):
         """Loads the image after the user has selected one"""
@@ -32,6 +40,3 @@ class main_window():
 
 #The module loaded and, thus, you see the window
 print("Module: UI successfully started.\n")
-
-win = main_window() # Creates an instance of the window class
-Gtk.main() # The main Gtk thread

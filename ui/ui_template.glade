@@ -14,7 +14,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <child>
-          <object class="GtkStack">
+          <object class="GtkStack" id="main_stack">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
@@ -86,29 +86,12 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkCheckMenuItem" id="setting_toggle_invert">
+                      <object class="GtkCheckMenuItem" id="button_check_invert">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">Changes the image's dark colours to clear and vice-versa.</property>
                         <property name="label" translatable="yes">Invert colours</property>
                         <property name="use-underline">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-copy</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-paste</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                       </object>
                     </child>
                     <child>
