@@ -48,12 +48,15 @@ class main_window(Gtk.Window):
         print("Module: UI, Image loaded successfully")
         self.main_image.set_from_file("./apurao.jpg")
 
+def ui_function(function: str) -> str:
+    """Returns the name of a function to use on the main so we can call functions to other modules"""
+    return function
+
 #The module loaded and, thus, you see the window
 print("Module: UI successfully started.\n")
 
+# TODO: Should move this to the main
 win = main_window() # Creates an instance of the window class
 win.show_all() # Shows the window's instance
 win.connect('destroy', Gtk.main_quit) # If the window closes, quit
 Gtk.main() # The main Gtk thread
-
-
