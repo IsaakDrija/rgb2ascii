@@ -1,14 +1,21 @@
 #Just import your libraries or whatever the heck you desire here
-import convert
+#import convert
 import ui
 
-from gi.repository import Gtk
-
+try:
+    from gi.repository import Gtk
+except:
+    import tkinter as tk
 
 if __name__ == "__main__":
     print("Hola mundo!") #Just testing haha
 
-    win = ui.main_window()
-    print(ui.main_window.setting_invert(win, win.button_check_invert))
+
     # This will be the backbone of the application. If it closes, the program terminates
-    Gtk.main()
+    try:
+        win = ui.main_window()
+        Gtk.main()
+    except:
+        window = tk.Tk()
+        app = ui.main_window(window)
+        window.mainloop()

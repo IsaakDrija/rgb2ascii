@@ -1,10 +1,10 @@
 from PIL import Image
-#from google.colab import files # Another library must be used.
+import re
 
 # List of ASCII characters
-ASCII_CHARS = ["@", "#", "$", "%", "?", "*", "+", ";", ":", ",", "."]
+ASCII_CHARS = [".", ",", ":", ";", "+", "*", "?", "%", "$", "#", "@"]
 
-# Resize the images
+# Resizes the images
 def resize(image, new_width=100):
     width, height = image.size
     ratio = height / width
@@ -12,44 +12,83 @@ def resize(image, new_width=100):
     resized_image = image.resize((new_width, new_height))
     return resized_image
 
-# Turn image into grayscale
+# Turns image into grayscale
 def gray(image):
     grayscale_image = image.convert("L")
     return grayscale_image
 
-# Convert each pixel into an ASCII character
+# Converts each pixel into an ASCII character
 def pixels_to_ascii(image):
     pixels = image.getdata()
     characters = ""
+    shade_f = 255 // (len(ASCII_CHARS) - 1 ) # Calculates the color shade factor
     for pixel in pixels:
-        characters += ASCII_CHARS[pixel // 25]  # Dividir píxeles en grupos de 25
-    return characters
+        characters += ASCII_CHARS[min(pixel // shade_f, len(ASCII_CHARS) - 1)]
+    return characters   # Divides each pixel by the factor and assigns a char.
 
 # Create the ASCII image
 def create_ascii_image(new_image_data, new_image_width):
     ascii_image = ""
     for i in range(0, len(new_image_data), new_image_width):
         line = new_image_data[i:i + new_image_width]
-        ascii_image += "".join(line) + "\n"
+        doubled_line = "".join([char * 2 for char in line])
+        ascii_image += doubled_line + "\n"
     return ascii_image
 
-
+# It is possible to run this module standalone as a single program without the UI
 if __name__ == "__main__":
-    # Load image
-    uploaded = files.upload()                                      # Load image
-    if uploaded:                        # Check if any files have been uploaded
-        filename = list(uploaded.keys())[0]                     # Get file name
+    finished = False
+    while finished == False:
+      valid_answer = False
+      while valid_answer == False:                # Loops until answer is valid
+        inv_image = input("Do you want to invert the colors? (Yes/Y, No/N)\n")
+        if inv_image.upper() not in ("YES", "Y", "NO", "N"):
+          print("That is not a valid answer\n")
+          continue
+        if inv_image.upper() in ("YES", "Y"):        # Controls color inversion
+          ASCII_CHARS = ASCII_CHARS[::-1]
+          print("Color inversion enabled\n")
+        else:
+          print("Color inversion disabled\n")
+        valid_answer = True
+
+      # Ask the user to input the full pilepath to the image (no spaces supported at the moment).
+      filename = str(input("Full filepath to the image (including extension): "))
+      pattern = r"\b(.)?([\\\/])?+\.(jpg|png|webp|gif|bmp)\b"
+
+      # Checks if the extension is supported by the program itself.
+      if re.match(pattern, filename):
+        print("The file path is either not valid or the file extension is not an image.")
+        continue
+
+      if filename:                     # Checks if any files have been uploaded
         try:
             image = Image.open(filename)
 
-            # Convert image into ASCII
+            # Converts image into ASCII
             new_image_width = 100
             resized_gray_image = gray(resize(image, new_image_width))
             new_image_data = pixels_to_ascii(resized_gray_image)
 
-            # Format the ASCII image
+            # Formats the ASCII image
             ascii_image = create_ascii_image(new_image_data, new_image_width)
             print(ascii_image)
 
         except:
-            print(f"Error al abrir la imagen: {e}")
+            print("An error ocurred while opening the image.")
+      else:
+        print("Stopping the program...\n")
+        break
+
+      # Asks the user if he wants to continue using the program or not.
+      end = input("Do you wish to upload another image? (Yes/Y, No/N)\n")
+      while end.upper() not in ("YES", "Y", "NO", "N"):
+        print("That is not a valid answer")
+        end = input("Do you wish to upload another image? (Yes/Y, No/N)\n")
+        continue
+      if end.upper() in ("YES", "Y"):
+        print("Restarting...\n")
+        continue
+      else:
+        print("Stopping the program...")
+        break
