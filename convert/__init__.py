@@ -1,4 +1,4 @@
-# Copyright (C) 2024  Héctor García Pérez, Airán Rivero Santana, Isaak Drija Medina
+# Copyright (C) 2024  Héctor García Pérez, Airán Rivero Santana, Isaak Drija Medina, Vanja Lončarić and Bryan González Alfonso
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
