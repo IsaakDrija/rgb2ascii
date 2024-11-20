@@ -15,6 +15,7 @@
 
 from PIL import Image
 import re
+from copy import deepcopy
 
 # List of ASCII characters
 ASCII_CHARS = [".", ",", ":", ";", "+", "*", "?", "%", "$", "#", "@"]
@@ -52,6 +53,7 @@ def create_ascii_image(new_image_data, new_image_width):
 
 # It is possible to run this module standalone as a single program without the UI
 if __name__ == "__main__":
+    ASCII_CHARS_COPY = deepcopy(ASCII_CHARS)
     finished = False
     while finished == False:
       valid_answer = False
@@ -69,7 +71,8 @@ if __name__ == "__main__":
 
       # Ask the user to input the full pilepath to the image (no spaces supported at the moment).
       filename = str(input("Full filepath to the image (including extension): "))
-      pattern = r"\b(.)?([\\\/])?+\.(jpg|png|webp|gif|bmp)\b"
+      # Checks whether the input directory matches a valid Windows or UNIX directory pattern
+      pattern = r"\b(.)?([\\\/])?+\.(jpg|png|webp|gif|bmp)\b" 
 
       # Checks if the extension is supported by the program itself.
       if re.match(pattern, filename):
